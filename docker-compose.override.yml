@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  nginx:
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.bitwarden.entrypoints: websecure
+      traefik.http.routers.bitwarden.rule: "Host(`vault.domain.tld`)"
+      traefik.http.routers.bitwarden.tls: true
+      traefik.http.routers.bitwarden.tls.certresolver: myresolver
+      traefik.http.services.bitwarden.loadbalancer.server.port: 8443
+      traefik.http.services.bitwarden.loadbalancer.server.scheme: https
+    networks:
+      default:
+      public:
+      web:
+
+networks:
+  default:
+    name: bitwarden-default
+  public:
+    name: bitwarden-public
+    internal: true
+  web:
+    external: true   
